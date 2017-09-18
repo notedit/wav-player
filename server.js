@@ -14,7 +14,7 @@ app.use(express.static('./'));
 var expressWs = expressWs(app);
 var app = expressWs.app;
 
-let  queue = [];
+let queue = [];
 
 app.ws('/pub', (socket, req) => {
 
@@ -29,8 +29,6 @@ app.ws('/pub', (socket, req) => {
     // queue.shift();
 
     socket.on('message',  (msg) =>{
-
-        console.log('message');
 
         // 缓存三段
         // if(queue.length > 3){
@@ -54,14 +52,7 @@ app.ws('/pub', (socket, req) => {
 });
 
 app.ws('/sub',  (socekt, req) => {
-
-    if(queue.length > 0){
-        for(let data of queue){
-            socket.send(data);
-            console.log('send111111');
-        }
-    }
-
+    
     subs.add(socekt);
     socekt.on('close', () => {
         subs.delete(socekt);

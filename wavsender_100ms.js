@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const sleep = require('sleep');
 const WebSocket = require('ws');
 
 
@@ -29,12 +28,15 @@ class WavSender
         console.log(typeof filename);
         console.log(err,filenames);
 
-        for(let filename of filenames){
-            console.log(filename);
-            let file = dirname + filename;
-            let err, data = fs.readFileSync(file);
-            this.ws.send(data);
-            await this.sleep(900);
+        // 重复循环 
+        while(true){
+            for(let filename of filenames){
+                console.log(filename);
+                let file = dirname + filename;
+                let err, data = fs.readFileSync(file);
+                this.ws.send(data);
+                await this.sleep(100);
+            }
         }
     }
     async sleep(ms){
@@ -48,6 +50,6 @@ class WavSender
 const sender = new WavSender();
 
 setTimeout(function() {
-    sender.readFiles('./audios/');
+    sender.readFiles('./audios_100ms/');
 }, 1000);
 
