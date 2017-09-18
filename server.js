@@ -8,7 +8,6 @@ const bufferConcat = require('buffer-concat');
 
 var app = express();
 var expressWs = require('express-ws');
-const websocketStream = require('websocket-stream/stream');
 
 const streamBuffers = require('stream-buffers');
 
@@ -62,11 +61,9 @@ app.ws('/pub', (socket, req) => {
             let allbuffer = bufferConcat(queues);
             queues = [];
             size = 0;
-            console.log('send222222');
 
             for (let sock of subs) {
                 sock.send(allbuffer);
-                console.log('send3333  ',allbuffer.byteLength);
             }
         }
 
@@ -87,8 +84,6 @@ app.ws('/sub',  (socekt, req) => {
     socekt.on('close', () => {
         subs.delete(socekt);
     })
-
-
 });
 
 
