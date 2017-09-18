@@ -35,7 +35,7 @@ class WavSender
                 let file = dirname + filename;
                 let err, data = fs.readFileSync(file);
                 this.ws.send(data);
-                await this.sleep(100);
+                await this.sleep(98);
             }
         }
     }

@@ -4,17 +4,26 @@ const cors = require('cors');
 const http = require('http');
 const wav = require('wav');
 
+const bufferConcat = require('buffer-concat');
+
 var app = express();
 var expressWs = require('express-ws');
+const websocketStream = require('websocket-stream/stream');
+
+const streamBuffers = require('stream-buffers');
 
 var subs = new Set();
 
 app.use(express.static('./'));
 
-var expressWs = expressWs(app);
+var expressWs = expressWs(app,null,{
+    perMessageDeflate: false,
+});
 var app = expressWs.app;
 
-let queue = [];
+let queues = [];
+let size = 0;
+let wavheader;
 
 app.ws('/pub', (socket, req) => {
 
@@ -38,9 +47,27 @@ app.ws('/pub', (socket, req) => {
         // let buffer = msg.slice(44);
         // fileWriter.write(buffer);
 
-        for (let sock of subs) {
-            sock.send(msg)
+        if(size == 0){
+            queues.push(msg); 
+            size += msg.length;
+        }
+
+        let buffer = msg.slice(44);
+        queues.push(buffer);
+        size += buffer.length;
+
+        // 缓存2秒钟
+        if(size > 40960){  
+
+            let allbuffer = bufferConcat(queues);
+            queues = [];
+            size = 0;
             console.log('send222222');
+
+            for (let sock of subs) {
+                sock.send(allbuffer);
+                console.log('send3333  ',allbuffer.byteLength);
+            }
         }
 
     });
@@ -51,12 +78,17 @@ app.ws('/pub', (socket, req) => {
 
 });
 
+
+
 app.ws('/sub',  (socekt, req) => {
-    
+
+
     subs.add(socekt);
     socekt.on('close', () => {
         subs.delete(socekt);
     })
+
+
 });
 
 

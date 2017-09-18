@@ -97,7 +97,7 @@ const WavPlayer = () => {
                 nextTime += duration; // Make the next buffer wait the length of the last buffer before being played
             }
 
-            scheduleBuffersTimeoutId = setTimeout(() => scheduleBuffers(), 400);
+            scheduleBuffersTimeoutId = setTimeout(() => scheduleBuffers(), 500);
         }
 
         websocket = new WebSocket(url);
@@ -151,7 +151,7 @@ const WavPlayer = () => {
 
                 if (!isStarted) {
                     isStarted = true;
-                    setTimeout(() => scheduleBuffers(), 300);
+                    setTimeout(() => scheduleBuffers(), 1000);
                 }
             });
 
