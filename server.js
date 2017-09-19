@@ -49,11 +49,11 @@ app.ws('/pub', (socket, req) => {
         if(size == 0){
             queues.push(msg); 
             size += msg.length;
+        } else {
+            let buffer = msg.slice(44);
+            queues.push(buffer);
+            size += buffer.length;
         }
-
-        let buffer = msg.slice(44);
-        queues.push(buffer);
-        size += buffer.length;
 
         // 缓存2秒钟
         if(size > 40960){  
