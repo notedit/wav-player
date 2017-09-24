@@ -56,7 +56,7 @@ app.ws('/pub', (socket, req) => {
         }
 
         // 缓存2秒钟
-        if(size > 40960){  
+        if(size > 81920){  
 
             let allbuffer = bufferConcat(queues);
             queues = [];
