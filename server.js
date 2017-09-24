@@ -63,7 +63,10 @@ app.ws('/pub', (socket, req) => {
             size = 0;
 
             for (let sock of subs) {
-                sock.send(allbuffer);
+                if(sock.readyState === 1){
+                    sock.send(allbuffer);
+                }
+               
             }
         }
 
@@ -79,10 +82,10 @@ app.ws('/pub', (socket, req) => {
 
 app.ws('/sub',  (socekt, req) => {
 
-
     subs.add(socekt);
     socekt.on('close', () => {
         subs.delete(socekt);
+        console.log('sockets ', subs);
     })
 });
 

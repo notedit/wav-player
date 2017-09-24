@@ -79,20 +79,20 @@ const WavPlayer = () => {
                 source.connect(context.destination);
 
                 if (nextTime == 0) {
-                    nextTime = currentTime + 0.2;  /// add 700ms latency to work well across systems - tune this if you like
+                    nextTime = currentTime + 0.3;  /// add 700ms latency to work well across systems - tune this if you like
                 }
 
                 let duration = source.buffer.duration;
                 let offset = 0;
 
+                //console.log('currentTime ',currentTime, 'nextTime ', nextTime, 'duration ', duration);
                 if (currentTime > nextTime) {
-                    offset = currentTime - nextTime;
-                    nextTime = currentTime;
-                    duration = duration - offset;
+                    nextTime = currentTime + 0.3;
                 }
-
                 source.start(nextTime, offset);
                 source.stop(nextTime + duration);
+
+                //console.log('currentTime ',currentTime, 'nextTime ', nextTime, 'duration ', duration);
 
                 nextTime += duration; // Make the next buffer wait the length of the last buffer before being played
             }
