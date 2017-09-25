@@ -45,6 +45,9 @@ app.ws('/pub', (socket, req) => {
         // }
         // let buffer = msg.slice(44);
         // fileWriter.write(buffer);
+        //
+
+        console.log('length ===',msg.length);
 
         if(size == 0){
             queues.push(msg); 
@@ -56,7 +59,7 @@ app.ws('/pub', (socket, req) => {
         }
 
         // 缓存2秒钟
-        if(size > 81920){  
+        if(size > 40960){  
 
             let allbuffer = bufferConcat(queues);
             queues = [];

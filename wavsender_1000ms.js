@@ -37,7 +37,7 @@ class WavSender
                 this.ws.send(data);
                 await this.sleep(1000);
             }
-            await this.sleep(3000);
+            await this.sleep(1000);
         }
     }
     async sleep(ms){

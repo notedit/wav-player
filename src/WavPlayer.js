@@ -72,7 +72,11 @@ const WavPlayer = () => {
 
                 const source = context.createBufferSource();
 
-                const segment = audioStack.shift();
+                let segment = audioStack.shift();
+
+                if(audioStack.length > 1) {
+                    segment = audioStack.shift();
+                }
 
                 //source.buffer = pad(segment.buffer);
                 source.buffer = segment.buffer;
@@ -87,7 +91,7 @@ const WavPlayer = () => {
 
                 //console.log('currentTime ',currentTime, 'nextTime ', nextTime, 'duration ', duration);
                 if (currentTime > nextTime) {
-                    nextTime = currentTime + 0.3;
+                    nextTime = currentTime;
                 }
                 source.start(nextTime, offset);
                 source.stop(nextTime + duration);
